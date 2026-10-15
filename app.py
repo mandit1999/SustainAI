@@ -163,12 +163,13 @@ st.html(
 @st.cache_data
 def load_data():
 
-    connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Mandit@123",
-        database="sustainai"
-    )
+   connection = mysql.connector.connect(
+    host=st.secrets["mysql"]["host"],
+    port=int(st.secrets["mysql"]["port"]),
+    user=st.secrets["mysql"]["user"],
+    password=st.secrets["mysql"]["password"],
+    database=st.secrets["mysql"]["database"]
+)
 
     query = "SELECT * FROM facility_data"
 
