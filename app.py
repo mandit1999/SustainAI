@@ -162,29 +162,26 @@ st.html(
 
 @st.cache_data
 def load_data():
+    try:
+        connection = mysql.connector.connect(
+            host=st.secrets["mysql"]["host"],
+            port=int(st.secrets["mysql"]["port"]),
+            user=st.secrets["mysql"]["user"],
+            password=st.secrets["mysql"]["password"],
+            database=st.secrets["mysql"]["database"]
+        )
 
-   connection = mysql.connector.connect(
-    host=st.secrets["mysql"]["host"],
-    port=int(st.secrets["mysql"]["port"]),
-    user=st.secrets["mysql"]["user"],
-    password=st.secrets["mysql"]["password"],
-    database=st.secrets["mysql"]["database"]
-)
+        query = "SELECT * FROM facility_data"
 
-query = "SELECT * FROM facility_data"
+        data = pd.read_sql(query, connection)
 
-    data = pd.read_sql(
-        query,
-        connection
-    )
+        connection.close()
 
-    connection.close()
+        return data
 
-    data["date"] = pd.to_datetime(
-        data["date"]
-    )
-
-    return data
+    except Exception as e:
+        st.error(f"Unable to connect to the SustainAI MySQL database: {e}")
+        return pd.DataFrame()
 
 
 # ============================================================
