@@ -171,7 +171,7 @@ def load_data():
     database=st.secrets["mysql"]["database"]
 )
 
-    query = "SELECT * FROM facility_data"
+query = "SELECT * FROM facility_data"
 
     data = pd.read_sql(
         query,
